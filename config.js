@@ -2,6 +2,8 @@ module.exports = {
     mtggoldfish: {
         baseUrl: 'https://www.mtggoldfish.com',
         tournamentDateFormat: 'YYYY-MM-DD',
+        sleepTournamentsDownload: 100,
+        sleepDecksDownload: 100 
     },
     db: {
         url: 'mongodb://127.0.0.1:27017/metatutor'

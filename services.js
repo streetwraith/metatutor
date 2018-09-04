@@ -14,7 +14,7 @@ const getTournaments = async function(dateStart, dateEnd, format) {
 		tournaments = tournaments.concat(pageTournaments);
 
 		pageNo += 1;
-		await Tools.sleep(100);
+		await Tools.sleep(Configuration.mtggoldfish.sleepTournamentsDownload);
 	} while(pageTournaments.length > 0);
 
 	console.log('pages parsed: '+pageNo);
@@ -28,6 +28,7 @@ const getDecksForTournament = async function(tournamentId) {
 	let pageHtml = await Scraper.downloadPage(Configuration.mtggoldfish.baseUrl+'/tournament/'+tournamentId);
 	let decks = Scraper.parseDecks(pageHtml);
 	let result = [];
+	await Tools.sleep(Configuration.mtggoldfish.sleepDecksDownload);
 	for(var i = 0; i<decks.length; i++) {
 		let deck = decks[i];
 		deck.tournamentId = tournamentId;
@@ -37,7 +38,7 @@ const getDecksForTournament = async function(tournamentId) {
 			deck.sideboard = decklist.sideboard;
 			result.push(deck);
 		}
-		await Tools.sleep(100);
+		await Tools.sleep(Configuration.mtggoldfish.sleepDecksDownload);
 	}
 	return result;
 }
