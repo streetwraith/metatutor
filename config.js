@@ -11,32 +11,38 @@ module.exports = {
     tournamentTypes: [
         {
             name: 'Pro Tour',
-            regex: /.*Pro.*Tour.*/g
+            regex: /.*Pro.*Tour.*/g,
+            format: 'modern',
         },
         {
             name: 'GP',
-            regex: /.*Grand.*Prix.*/g	
+            regex: /.*Grand.*Prix.*/g,
+            format: 'modern',
         },
         {
             name: 'SCG Open',
-            regex: /.*SCG.*Open.*/g
+            regex: /.*SCG.*Open.*/g,
+            format: 'modern',
         },
         {
             name: 'SCG Classic',
-            regex: /.*SCG.*Classic.*/g
+            regex: /.*SCG.*Classic.*/g,
+            format: 'modern',
         },
         {
             name: 'SCG IQ',
-            regex: /.*SCG.*IQ.*/g
+            regex: /.*SCG.*IQ.*/g,
+            format: 'modern',
         },
         {
             name: 'MTGO Challenge',
-            regex: /.*Challenge.*/
+            regex: /.*Challenge.*/,
+            format: 'modern',
         },
         {
             name: 'MTGO MOCS',
-            regex: /.*MOCS.*/
+            regex: /.*MOCS.*/,
+            format: 'modern',
         },
-    ],
-
+    ]
 }
