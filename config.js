@@ -21,28 +21,43 @@ module.exports = {
         },
         {
             name: 'SCG Open',
-            regex: /.*SCG.*Open.*/g,
+            regex: /.*SCG.*Modern.*Open.*/g,
             format: 'modern',
         },
         {
             name: 'SCG Classic',
-            regex: /.*SCG.*Classic.*/g,
+            regex: /.*SCG.*Modern.*Classic.*/g,
             format: 'modern',
         },
         {
             name: 'SCG IQ',
-            regex: /.*SCG.*IQ.*/g,
+            regex: /.*SCG.*Modern.*IQ.*/g,
             format: 'modern',
         },
         {
             name: 'MTGO Challenge',
-            regex: /.*Challenge.*/,
+            regex: /.*Modern.*Challenge.*/,
             format: 'modern',
         },
         {
             name: 'MTGO MOCS',
-            regex: /.*MOCS.*/,
+            regex: /.*Modern.*MOCS.*/,
             format: 'modern',
         },
+        {
+            name: 'Magic Online World Championship',
+            regex: /.*Magic.*Online.*World.*Championship.*/,
+            format: 'modern',
+        },
+        {
+            name: 'SCG Regionals',
+            regex: /.*SCG.*Regionals.*/,
+            format: 'modern',
+        },
+        {
+            name: 'Modern PTQ',
+            regex: /.*Modern.*PTQ.*/,
+            format: 'modern',
+        }
     ]
 }
