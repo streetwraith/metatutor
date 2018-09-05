@@ -30,10 +30,10 @@ process.on('SIGINT', shutdown);
 // process.on('uncaughtException', shutdown);
 // process.on('unhandledRejection', shutdown);
 
-const getTournaments = async function(dateStart, dateEnd, format) {
+const getTournaments = async function(dateStart, dateEnd, tournamentTypes, format) {
 	let tournaments = await Services.getTournaments(dateStart, dateEnd, format)
 	.then(tournaments => tournaments.filter(tournament => tournament['format'] === 'modern' || tournament['format'] === 'mixed'))
-	.then(tournaments => tournaments.filter(tournament => Configuration.tournamentTypes.some(tournamentType => tournament.name.match(tournamentType.regex))))
+	.then(tournaments => tournaments.filter(tournament => tournamentTypes.some(tournamentType => tournament.name.match(tournamentType.regex))))
 	.then(tournaments => 
 		Promise.all(tournaments.map(Persistence.persistTournament))
 	);
@@ -43,7 +43,7 @@ const getDecks = async function(tournamentId, dateStart) {
     let query = {}
     // query by tournament types:
     // {
-	// 	$or: Configuration.tournamentTypes.map(tt => {
+	// 	$or: Object.values(Configuration.tournamentTypes).map(tt => {
 	// 		return {
 	// 			name: {
 	// 				$regex: tt.regex, 
@@ -78,6 +78,8 @@ const getDecks = async function(tournamentId, dateStart) {
 const run = async function() {
     
 	// await getTournaments('2018-01-01', '2018-08-31', 'modern');
+    let tournamentTypes = Object.values(Configuration.tournamentTypes);
+	// await getTournaments('2018-01-01', '2018-08-31', tournamentTypes, 'modern');
 	// await getDecks(null, '2018-01-01');
 
 	return;

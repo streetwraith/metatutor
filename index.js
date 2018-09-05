@@ -30,9 +30,39 @@ process.on('SIGINT', shutdown);
 // process.on('uncaughtException', shutdown);
 // process.on('unhandledRejection', shutdown);
 
-const findByArchetype = async function(archetype) {
+const findDecks = async function(archetype, tournamentTypes) {
+	console.log('searching for decks with criteria:');
+	console.log('archetype:\n', archetype);
+	if(tournamentTypes && tournamentTypes.length > 0) {
+		console.log('tournamentTypes:');
+		console.table(tournamentTypes);
+	}
+
+	let decksQuery = {};
 	let matches = [];
-	await Persistence.model.Deck.find({})
+	let tournaments = [];
+
+	if(tournamentTypes && tournamentTypes.length > 0) {
+		let tournamentsQuery = {
+			$or: tournamentTypes.map(tt => {
+				return {
+					name: {
+						$regex: tt.regex, 
+						$options: 'i'
+					}
+				};
+			})
+		};
+		tournaments = await Persistence.model.Tournament.find(tournamentsQuery, {_id: 1});
+
+		decksQuery = {
+			tournamentId: {
+				$in: tournaments.map(t => t._id)
+			}
+		};
+	}
+
+	await Persistence.model.Deck.find(decksQuery)
 	.then(decks => {
 		decks.forEach(deck => {
 			let mainboardCards = deck.mainboard.map(d => d._id);
@@ -80,50 +110,13 @@ const printStats = function(decks, board) {
 
 const run = async function() {
 
-	let decks = await findByArchetype({
-		name: 'Blue Moon',
-		format: 'modern',
-		includedCards: ['Snapcaster Mage', 'Blood Moon', 'Lightning Bolt', 'Scalding Tarn'],
-		excludedCards: ['Tarmogoyf'],
-	});
-	console.log('blue moon');
+	let archetype = Configuration.deckArchetypes.FETCHLESS_STORM
+	decks = await findDecks(archetype, [Configuration.tournamentTypes.SCG_OPEN]);
+	console.log(archetype.name);
 	printStats(decks, 'mainboard');
 	printStats(decks, 'sideboard');
 
-	decks = await findByArchetype({
-		name: 'Fetchless Storm',
-		format: 'modern',
-		includedCards: ['Shivan Reef', 'Past in Flames', 'Grapeshot'],
-		excludedCards: ['Scalding Tarn'],
-	});
-	console.log('fetchless storm');
-	printStats(decks, 'mainboard');
-	printStats(decks, 'sideboard');
-
-	decks = await findByArchetype({
-		name: 'GDS',
-		format: 'modern',
-		includedCards: ['Death\'s Shadow', 'Street Wraith', 'Gurmag Angler'],
-		excludedCards: ['Tarmogoyf'],
-	});
-	console.log('gds');
-	printStats(decks, 'mainboard');
-	printStats(decks, 'sideboard');
-
-	decks = await findByArchetype({
-		name: 'Tron',
-		format: 'modern',
-		includedCards: ['Urza\'s Tower', 'Urza\'s Power Plant',  'Urza\'s Mine', 'Sylvan Scrying'],
-		excludedCards: ['Eldrazi Temple'],
-	});
-	console.log('tron');
-	printStats(decks, 'mainboard');
-	printStats(decks, 'sideboard');
-
-	// printStats(decks, 'mainboard');
-	// printStats(decks, 'sideboard');
-
-	// decks = await findByArchetype({
+	// decks = await findDecks({
 	// 	name: 'All',
 	// 	format: 'modern',
 	// 	includedCards: [],
