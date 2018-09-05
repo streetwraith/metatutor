@@ -1,7 +1,7 @@
 {
   "name": "metatutor",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple toolset for gathering and analysing mtg tournament data",
   "main": "index.js",
   "scripts": {},
   "author": "streetwraith",
